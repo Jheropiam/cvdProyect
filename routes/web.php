@@ -17,7 +17,7 @@ use App\Http\Controllers\UserController;
 
 
 Route::get('/', function () {
-    return view('usuarios.login');
+    return view('plantillas.home_public');
 });
 
 
@@ -30,8 +30,10 @@ Route::get('/home',function(){
 })->middleware('auth')->name('home');
 
 
+Route::get('/usuarios/login', [LoginController::class,'usuariologin'])->middleware(['auth'])->name('usuarios.login');
 
 //Usuarios
+
 Route::get('/usuarios/index', [UserController::class,'index'])->middleware(['auth'])->name('usuarios.index');
 Route::get('/usuarios/edit/{id}', [UserController::class,'edit'])->middleware(['auth'])->name('usuarios.edit');
 Route::post('/usuarios/update', [UserController::class,'update'])->middleware(['auth'])->name('usuarios.update');
