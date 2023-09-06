@@ -48,3 +48,4 @@ Route::post("/ActualizaContrasena",[UserController::class, "ActualizaContrasena"
 //Login
 Route::post("/login",[LoginController::class, 'login']);
 Route::put('/login', [LoginController::class, 'logout']);
+
