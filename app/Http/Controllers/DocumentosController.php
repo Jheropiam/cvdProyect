@@ -34,17 +34,33 @@ class DocumentosController extends Controller
      {
          $fpdi = new FPDI;
          $count = $fpdi->setSourceFile($file);
+         $ajuste=-5;
+         $codigo_cvd='0015 3824 1828 2104'; //aqui cambiar el código
          for ($i=1; $i<=$count; $i++) {
              $template = $fpdi->importPage($i);
              $size = $fpdi->getTemplateSize($template);
              $fpdi->AddPage($size['orientation'], array($size['width'], $size['height']));
              $fpdi->useTemplate($template);
-             $fpdi->SetFont("helvetica", "", 12);
-             $fpdi->SetTextColor(153,0,153);
-             $left = 20;
-             $top = 170;
-             $text = "Esta es una representación impresa cuya autenticidad puede ser contrastada con la representación imprimible localizada en la sede digital de la Presidencia  del consejo de ministros. La verificación puede ser efectuada a partir del  05/01/2021 hasta el 05/04/2021. Base Legal: Decreto Legislativo N° 1412, Decreto Supremo N° 029-2021-PCM y la Directiva N° 002-2021-PCM/SGTD";
-             $fpdi->Cell($left,$top,$text,1,1,'FJ',1);
+             $fpdi->SetFont("Courier", "", 8);
+             $fpdi->SetTextColor(0,0,0);
+             $alto_pagina=$fpdi->GetPageHeight();
+             $text = "Esta  es  una  representación  impresa cuya autenticidad puede ser";
+             $fpdi->Text(40,$alto_pagina-30+$ajuste,utf8_decode($text));
+             $text = "contrastada  con  la representación imprimible localizada en la sede";
+             $fpdi->Text(40,$alto_pagina-27+$ajuste,utf8_decode($text));
+             $text = "digital  de la Presidencia  del consejo de ministros. La verificación";
+             $fpdi->Text(40,$alto_pagina-24+$ajuste,utf8_decode($text));
+             $text = "puede ser efectuada a partir del  05/01/2021 hasta el 05/04/2021. Base";
+             $fpdi->Text(40,$alto_pagina-21+$ajuste,utf8_decode($text));
+             $text = "Legal:  Decreto Legislativo N° 1412, Decreto Supremo N° 029-2021-PCM";
+             $fpdi->Text(40,$alto_pagina-18+$ajuste,utf8_decode($text));
+             $text = "y la Directiva N° 002-2021-PCM/SGTD";
+             $fpdi->Text(40,$alto_pagina-15+$ajuste,utf8_decode($text));
+             $fpdi->SetFont("Courier", "B", 8);
+             $text = "URL: https://codigocvd.regionloreto.gob.pe/verifica-cvd";
+             $fpdi->Text(40,$alto_pagina-9+$ajuste,utf8_decode($text));
+             $text = "CVD: ".$codigo_cvd;
+             $fpdi->Text(40,$alto_pagina-6+$ajuste,utf8_decode($text));
              
             //  $fpdi->Image("http://localhost/dylan.jpg", 40, 90); //para poner imágenes
          }
