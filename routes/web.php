@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DocumentosController;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,8 +35,15 @@ Route::get('/home',function(){
 
 Route::get('/usuarios/login', [LoginController::class,'usuariologin'])->middleware(['auth'])->name('usuarios.login');
 
-//Usuarios
+Route::get('fill-data-pdf', [DocumentosController::class,'index']);
 
+
+
+//Documentos
+Route::get('/documentos/create', [DocumentosController::class,'create'])->middleware(['auth'])->name('documentos.create');
+Route::post('/documentos/store', [DocumentosController::class,'store'])->middleware(['auth'])->name('documentos.store');
+
+//Usuarios
 Route::get('/usuarios/index', [UserController::class,'index'])->middleware(['auth'])->name('usuarios.index');
 Route::get('/usuarios/edit/{id}', [UserController::class,'edit'])->middleware(['auth'])->name('usuarios.edit');
 Route::post('/usuarios/update', [UserController::class,'update'])->middleware(['auth'])->name('usuarios.update');
