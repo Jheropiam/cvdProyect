@@ -62,7 +62,7 @@
                         <ul>
                             <li> <a href="index.html"><i class="bx bx-right-arrow-alt"></i>Listar</a>
                             </li>
-                            <li> <a href="index2.html"><i class="bx bx-right-arrow-alt"></i>Subir</a>
+                            <li> <a href="{{route('documentos.create')}}"><i class="bx bx-right-arrow-alt"></i>Subir</a>
                             </li>
                         </ul>
                     </li>
