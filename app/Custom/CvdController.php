@@ -4,7 +4,7 @@ namespace App\Custom;
 
 use Illuminate\Support\Facades\Log;
 
-class Cvd
+class CvdController
 {
     public static $version  = 0;
 
