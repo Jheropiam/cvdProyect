@@ -65,8 +65,7 @@ class Cvd
             $finalTime = str_pad($timeDiff, 12, '0', STR_PAD_LEFT);
             return $finalTime;
         } catch ( \Exception  $e) {
-            Log::error('Ocurrió un error');
-            //Log::error('Ocurrio un error: ', $e->getMessage());
+            Log::error('Ocurrio un error: ', $e->getMessage());
             return false;
         }
     }
