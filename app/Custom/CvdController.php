@@ -22,7 +22,10 @@ class Cvd
 
     public static function verifyCvd(string $cvd): bool
     {
-        return false;
+        if(!is_numeric($cvd) && strlen($cvd) !== 12 ){
+            return false;
+        }
+        return true;
     }
 
     function setDigitVerify($numero) {
