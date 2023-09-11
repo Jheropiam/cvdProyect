@@ -22,9 +22,29 @@ class CvdController
 
     public static function verifyCvd(string $cvd): bool
     {
-        if(!is_numeric($cvd) && strlen($cvd) !== 12 ){
+        if(!is_numeric($cvd) || strlen($cvd) !== 12 || $cvd[0] !== '0' ){
             return false;
         }
+
+        $sum = 0;
+        $size = strlen($cvd);
+
+        for($i = 0; $i < $size; $i++){
+            $digito = (int)$cvd[$i];
+            if($i % 2 == 0){
+                $digito *= 2;;
+                if($digito > 9){
+                    $digito -= 9;
+                }
+            }
+            $sum += $digito;
+        }
+        $sum = $sum + $cvd[$size-1];
+
+        if ($sum % 10 === 0){
+            return false;
+        }
+
         return true;
     }
 
