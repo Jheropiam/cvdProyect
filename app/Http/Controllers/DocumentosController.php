@@ -49,8 +49,6 @@ class DocumentosController extends Controller
 
          $codigo_cvd='0015 3824 1828 2104'; //aqui cambiar el código
 
-
-
         for ($i=1; $i<=$count; $i++) {
             $template = $fpdi->importPage($i);
             $size = $fpdi->getTemplateSize($template);
@@ -76,16 +74,7 @@ class DocumentosController extends Controller
             $fpdi->Text(40,$alto_pagina-9+$ajuste,utf8_decode($text));
             $text = "CVD: ".$codigo_cvd;
             $fpdi->Text(40,$alto_pagina-6+$ajuste,utf8_decode($text));
-
-            $ruta=Storage::disk('public')->url('documentos/'.$archivo);//texto codificado en qr
-
-            $nombre_qr=time();
-            // $ruta_qr='storage/qrcodes/'.$nombre_qr.'.png';//ruta y nombre del archivo img qr
-            $path = public_path('qrcodes/'.time().'.png');
-            QrCode::size(200)->generate($ruta,$path);
             
-            // $data->storeAs('qrcodes/',$nombre_qr.'.png','codigos_qr');//generamos QRcode
-
             $fpdi->Image($path, 150, 250); //inserta qr en archivo
 
          }
