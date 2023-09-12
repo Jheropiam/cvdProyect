@@ -14,7 +14,7 @@
                     <form action="{{route('documentos.store')}}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <label for="">Seleccione Documento para CVD</label>
-                        <input id="documento" class="form-control" type="file" name="documento" accept=".doc, .docx, .pdf" required>
+                        <input id="documento" class="form-control" type="file" name="documento" accept=".doc, .docx, .pdf,.png,.jpg" required>
                         <label for="">Seleccione Documento Adjunto(Firmado Electrónicamente)</label>
                         <input id="documento_adjunto" class="form-control" type="file" name="documento_adjunto" accept=".pdf" required>
                         <input type="text" id="fecha" name="fecha" hidden>

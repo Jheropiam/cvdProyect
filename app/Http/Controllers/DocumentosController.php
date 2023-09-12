@@ -8,6 +8,16 @@ use Illuminate\Support\Facades\Storage;
 use setasign\Fpdi\Fpdi;
 
 
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
+use BaconQrCode\Renderer\RendererStyle\RendererStyle;
+use BaconQrCode\Writer;
+
+// use BaconQrCode\Renderer\Image\Png;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
+
+
 class DocumentosController extends Controller
 {
     /**
@@ -30,47 +40,60 @@ class DocumentosController extends Controller
      * Store a newly created resource in storage.
      */
 
-     public function fillPDFFile_withCVDCode($file, $outputFilePath)
+     public function fillPDFFile_withCVDCode($file, $outputFilePath,$archivo)
      {
+
          $fpdi = new FPDI;
          $count = $fpdi->setSourceFile($file);
          $ajuste=-5;
-         $codigo_cvd='0015 3824 1828 2104'; //aqui cambiar el código
-         for ($i=1; $i<=$count; $i++) {
-             $template = $fpdi->importPage($i);
-             $size = $fpdi->getTemplateSize($template);
-             $fpdi->AddPage($size['orientation'], array($size['width'], $size['height']));
-             $fpdi->useTemplate($template);
-             $fpdi->SetFont("Courier", "", 8);
-             $fpdi->SetTextColor(0,0,0);
-             $alto_pagina=$fpdi->GetPageHeight();
-             $text = "Esta  es  una  representación  impresa cuya autenticidad puede ser";
-             $fpdi->Text(40,$alto_pagina-30+$ajuste,utf8_decode($text));
-             $text = "contrastada  con  la representación imprimible localizada en la sede";
-             $fpdi->Text(40,$alto_pagina-27+$ajuste,utf8_decode($text));
-             $text = "digital  de la Presidencia  del consejo de ministros. La verificación";
-             $fpdi->Text(40,$alto_pagina-24+$ajuste,utf8_decode($text));
-             $text = "puede ser efectuada a partir del  05/01/2021 hasta el 05/04/2021. Base";
-             $fpdi->Text(40,$alto_pagina-21+$ajuste,utf8_decode($text));
-             $text = "Legal:  Decreto Legislativo N° 1412, Decreto Supremo N° 029-2021-PCM";
-             $fpdi->Text(40,$alto_pagina-18+$ajuste,utf8_decode($text));
-             $text = "y la Directiva N° 002-2021-PCM/SGTD";
-             $fpdi->Text(40,$alto_pagina-15+$ajuste,utf8_decode($text));
-             $fpdi->SetFont("Courier", "B", 8);
-             $text = "URL: https://codigocvd.regionloreto.gob.pe/verifica-cvd";
-             $fpdi->Text(40,$alto_pagina-9+$ajuste,utf8_decode($text));
-             $text = "CVD: ".$codigo_cvd;
-             $fpdi->Text(40,$alto_pagina-6+$ajuste,utf8_decode($text));
-             
-            //  $fpdi->Image("http://localhost/dylan.jpg", 40, 90); //para poner imágenes
-         }
-   
-         return $fpdi->Output($outputFilePath, 'F');
-     }
-    
-    public function algoritmo_lum(){
 
-    }
+         $codigo_cvd='0015 3824 1828 2104'; //aqui cambiar el código
+
+
+
+        for ($i=1; $i<=$count; $i++) {
+            $template = $fpdi->importPage($i);
+            $size = $fpdi->getTemplateSize($template);
+            $fpdi->AddPage($size['orientation'], array($size['width'], $size['height']));
+            $fpdi->useTemplate($template);
+            $fpdi->SetFont("Courier", "", 8);
+            $fpdi->SetTextColor(0,0,0);
+            $alto_pagina=$fpdi->GetPageHeight();
+            $text = "Esta  es  una  representación  impresa  cuya autenticidad  puede  ser";
+            $fpdi->Text(40,$alto_pagina-30+$ajuste,utf8_decode($text));
+            $text = "contrastada  con  la representación  imprimible localizada en la  sede";
+            $fpdi->Text(40,$alto_pagina-27+$ajuste,utf8_decode($text));
+            $text = "digital  de la Presidencia  del consejo de ministros.  La verificación";
+            $fpdi->Text(40,$alto_pagina-24+$ajuste,utf8_decode($text));
+            $text = "puede ser efectuada a partir del  05/01/2021 hasta el 05/04/2021. Base";
+            $fpdi->Text(40,$alto_pagina-21+$ajuste,utf8_decode($text));
+            $text = "Legal:  Decreto Legislativo N° 1412, Decreto  Supremo  N° 029-2021-PCM";
+            $fpdi->Text(40,$alto_pagina-18+$ajuste,utf8_decode($text));
+            $text = "yqrcode la Directiva N° 002-2021-PCM/SGTD";
+            $fpdi->Text(40,$alto_pagina-15+$ajuste,utf8_decode($text));
+            $fpdi->SetFont("Courier", "B", 8);
+            $text = "URL: https://codigocvd.regionloreto.gob.pe/verifica-cvd";
+            $fpdi->Text(40,$alto_pagina-9+$ajuste,utf8_decode($text));
+            $text = "CVD: ".$codigo_cvd;
+            $fpdi->Text(40,$alto_pagina-6+$ajuste,utf8_decode($text));
+
+            $ruta=Storage::disk('public')->url('documentos/'.$archivo);//texto codificado en qr
+
+            $nombre_qr=time();
+            // $ruta_qr='storage/qrcodes/'.$nombre_qr.'.png';//ruta y nombre del archivo img qr
+            $path = public_path('qrcodes/'.time().'.png');
+            QrCode::size(200)->generate($ruta,$path);
+            
+            // $data->storeAs('qrcodes/',$nombre_qr.'.png','codigos_qr');//generamos QRcode
+
+            $fpdi->Image($path, 150, 250); //inserta qr en archivo
+
+         }
+
+        return $fpdi->Output($outputFilePath, 'F');
+     }
+
+
 
     public function store(Request $request)
     {
@@ -98,13 +121,13 @@ class DocumentosController extends Controller
         $obj->hora = request('hora');
         $obj->user_id=auth()->user()->id;
         $obj->save();
-        
+
         $filePath = public_path('storage/documentos/'.$archivo);
         $outputFilePath = public_path('storage/documentos/'.$archivo);
-        $this->fillPDFFile_withCVDCode($filePath, $outputFilePath);
+        $this->fillPDFFile_withCVDCode($filePath, $outputFilePath,$archivo);
         // return response()->file($outputFilePath);
         return redirect()->route('documentos.create');
-     
+
     }
 
 
