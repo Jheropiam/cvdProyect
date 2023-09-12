@@ -13,6 +13,8 @@ use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use BaconQrCode\Writer;
 
+use App\Custom\CvdController;
+
 // use BaconQrCode\Renderer\Image\Png;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
@@ -46,9 +48,8 @@ class DocumentosController extends Controller
          $fpdi = new FPDI;
          $count = $fpdi->setSourceFile($file);
          $ajuste=-5;
-
-         $codigo_cvd='0015 3824 1828 2104'; //aqui cambiar el código
-
+         $codigo_cvd=CvdController::makeCvd(); //aqui cambiar el código
+         
         for ($i=1; $i<=$count; $i++) {
             $template = $fpdi->importPage($i);
             $size = $fpdi->getTemplateSize($template);
@@ -75,10 +76,13 @@ class DocumentosController extends Controller
             $text = "CVD: ".$codigo_cvd;
             $fpdi->Text(40,$alto_pagina-6+$ajuste,utf8_decode($text));
 
-
-
-            
-            $fpdi->Image($path, 150, 250); //inserta qr en archivo
+            // Genera el código QR
+            QrCode::format('png');  //Devolvera una imagen PNG
+            $qrCode = QrCode::size(200)->generate('Tu información QR aquí');
+            // Guarda el código QR en el disco público
+            Storage::disk('codigos')->put('qrcodes/eureka.png', $qrCode);
+        
+            // $fpdi->Image($path, 150, 250); //inserta qr en archivo
 
          }
 
