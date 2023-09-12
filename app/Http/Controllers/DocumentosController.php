@@ -74,6 +74,9 @@ class DocumentosController extends Controller
             $fpdi->Text(40,$alto_pagina-9+$ajuste,utf8_decode($text));
             $text = "CVD: ".$codigo_cvd;
             $fpdi->Text(40,$alto_pagina-6+$ajuste,utf8_decode($text));
+
+
+
             
             $fpdi->Image($path, 150, 250); //inserta qr en archivo
 
