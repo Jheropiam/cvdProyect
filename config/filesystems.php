@@ -36,18 +36,18 @@ return [
             'throw' => false,
         ],
 
+        // 'public' => [
+        //     'driver' => 'local',
+        //     'root' => storage_path('app/public'),
+        //     // 'root' => public_path('/'),
+        //     'url' => env('APP_URL').'/storage',
+        //     'visibility' => 'public',
+        //     'throw' => false,
+        // ],
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
-            // 'root' => public_path('/'),
+            'root' => public_path('/storage'),
             'url' => env('APP_URL').'/storage',
-            'visibility' => 'public',
-            'throw' => false,
-        ],
-        'codigos' => [
-            'driver' => 'local',
-            'root' => public_path('/'),
-            'url' => env('APP_URL').'/',
             'visibility' => 'public',
             'throw' => false,
         ],
