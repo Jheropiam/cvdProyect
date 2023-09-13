@@ -7,15 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use setasign\Fpdi\Fpdi;
 
-
-use BaconQrCode\Renderer\ImageRenderer;
-use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
-use BaconQrCode\Renderer\RendererStyle\RendererStyle;
-use BaconQrCode\Writer;
-
-// use BaconQrCode\Renderer\Image\Png;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
-
+use App\Custom\CvdController;//de ginovski
+use App\Custom\Qrcodeg;//de ginovski
+use DB;
+// use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 
 class DocumentosController extends Controller
@@ -25,7 +20,8 @@ class DocumentosController extends Controller
      */
     public function index()
     {
-
+        $documentos = documentos::all();
+        return view('documentos.index',['documentos'=>$documentos]);
     }
 
     /**
@@ -40,17 +36,24 @@ class DocumentosController extends Controller
      * Store a newly created resource in storage.
      */
 
-     public function fillPDFFile_withCVDCode($file, $outputFilePath,$archivo)
+     public function fillPDFFile_withCVDCode($file, $outputFilePath,$ultimo_id)
+     
      {
 
-         $fpdi = new FPDI;
-         $count = $fpdi->setSourceFile($file);
-         $ajuste=-5;
 
-         $codigo_cvd='0015 3824 1828 2104'; //aqui cambiar el código
-
-
-
+        $fpdi = new FPDI;
+        $count = $fpdi->setSourceFile($file);
+        $ajuste=-5;
+        $codigo_cvd=CvdController::makeCvd(); //aqui cambiar el código
+        
+        // Genera el código QR
+        $path=public_path('qrcodes/'.$codigo_cvd.'.png');    
+        $texto_codificar=asset('qrcodes/'.$codigo_cvd.'.png');//Aqui será cambiado a la url de 
+        // Guarda el código QR en el disco público
+        $Qrlib = new Qrcodeg($texto_codificar,$path);
+        $Qrlib->makeQR();
+        // dd($ruta);
+        
         for ($i=1; $i<=$count; $i++) {
             $template = $fpdi->importPage($i);
             $size = $fpdi->getTemplateSize($template);
@@ -72,26 +75,21 @@ class DocumentosController extends Controller
             $text = "yqrcode la Directiva N° 002-2021-PCM/SGTD";
             $fpdi->Text(40,$alto_pagina-15+$ajuste,utf8_decode($text));
             $fpdi->SetFont("Courier", "B", 8);
-            $text = "URL: https://codigocvd.regionloreto.gob.pe/verifica-cvd";
+            $text = "URL: https://consultacvd.regionloreto.gob.pe/verifica-cvd";
             $fpdi->Text(40,$alto_pagina-9+$ajuste,utf8_decode($text));
             $text = "CVD: ".$codigo_cvd;
             $fpdi->Text(40,$alto_pagina-6+$ajuste,utf8_decode($text));
-
-            $ruta=Storage::disk('public')->url('documentos/'.$archivo);//texto codificado en qr
-
-            $nombre_qr=time();
-            // $ruta_qr='storage/qrcodes/'.$nombre_qr.'.png';//ruta y nombre del archivo img qr
-            $path = public_path('qrcodes/'.time().'.png');
-            QrCode::size(200)->generate($ruta,$path);
             
-            // $data->storeAs('qrcodes/',$nombre_qr.'.png','codigos_qr');//generamos QRcode
-
-            $fpdi->Image($path, 150, 250); //inserta qr en archivo
-
+            $fpdi->Image('qrcodes/'.$codigo_cvd.'.png', 160, $alto_pagina-34+$ajuste); //inserta qrcode en archivo  
+            $doc=documentos::findOrFail($ultimo_id);
+            $doc->cvd=$codigo_cvd;
+            $doc->save();
          }
-
         return $fpdi->Output($outputFilePath, 'F');
+        
+  
      }
+
 
 
 
@@ -121,12 +119,15 @@ class DocumentosController extends Controller
         $obj->hora = request('hora');
         $obj->user_id=auth()->user()->id;
         $obj->save();
+        $ultimo_id=$obj->id;
 
         $filePath = public_path('storage/documentos/'.$archivo);
         $outputFilePath = public_path('storage/documentos/'.$archivo);
-        $this->fillPDFFile_withCVDCode($filePath, $outputFilePath,$archivo);
+        $this->fillPDFFile_withCVDCode($filePath, $outputFilePath,$ultimo_id);
+        
         // return response()->file($outputFilePath);
-        return redirect()->route('documentos.create');
+        return redirect()->route('documentos.index');
+
 
     }
 
@@ -135,9 +136,18 @@ class DocumentosController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(documentos $documentos)
+    public function show()
     {
-        //
+        $codigo=request('codigo');
+        $doc=documentos::where('cvd','=',$codigo)
+        ->get();
+        if ($doc->count()>0){
+            $msje='existe';
+        }else{
+            $msje='noexiste';
+        }
+        return view('plantillas.home_public',['mensaje'=>$msje,'doc'=>$doc]);
+
     }
 
     /**

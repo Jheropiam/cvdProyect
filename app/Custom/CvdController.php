@@ -48,7 +48,7 @@ class CvdController
         return true;
     }
 
-    function setDigitVerify($numero) {
+    public static function setDigitVerify($numero) {
         $numero = strrev($numero);
         $suma = 0;
         

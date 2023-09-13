@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('documento', 250)->default('');
             $table->string('extension', 100)->default('');
             $table->string('documento_adjunto', 250)->default('');
+            $table->string('cvd', 250)->default('');
             $table->date('fecha');
             $table->time('hora');
             $table->timestamps();

@@ -4,7 +4,7 @@ namespace App\Custom;
 
 require_once 'phpqrcode/qrlib.php';
 
-class Qrlib
+class Qrcodeg
 {
     private $name;
     private $path;
@@ -17,7 +17,7 @@ class Qrlib
 
     public function makeQR(): string
     {
-        \QRcode::png($this->name, $this->path, QR_ECLEVEL_L, 20, 3);
+        \QRcode::png($this->name, $this->path, QR_ECLEVEL_L, 3, 2);
         return $this->path; 
     }
 
