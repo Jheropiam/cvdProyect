@@ -47,8 +47,8 @@ class DocumentosController extends Controller
         $codigo_cvd=CvdController::makeCvd(); //aqui cambiar el código
         
         // Genera el código QR
-        $path=public_path('qrcodes/'.$codigo_cvd.'.png');    
-        $texto_codificar=asset('qrcodes/'.$codigo_cvd.'.png');//Aqui será cambiado a la url de 
+        $path=public_path('storage/qrcodes/'.$codigo_cvd.'.png');    
+        $texto_codificar=asset('storage/qrcodes/'.$codigo_cvd.'.png');//Aqui será cambiado a la url de 
         // Guarda el código QR en el disco público
         $Qrlib = new Qrcodeg($texto_codificar,$path);
         $Qrlib->makeQR();
@@ -80,7 +80,7 @@ class DocumentosController extends Controller
             $text = "CVD: ".$codigo_cvd;
             $fpdi->Text(40,$alto_pagina-6+$ajuste,utf8_decode($text));
             
-            $fpdi->Image('qrcodes/'.$codigo_cvd.'.png', 160, $alto_pagina-34+$ajuste); //inserta qrcode en archivo  
+            $fpdi->Image('storage/qrcodes/'.$codigo_cvd.'.png', 160, $alto_pagina-34+$ajuste); //inserta qrcode en archivo  
             $doc=documentos::findOrFail($ultimo_id);
             $doc->cvd=$codigo_cvd;
             $doc->save();
