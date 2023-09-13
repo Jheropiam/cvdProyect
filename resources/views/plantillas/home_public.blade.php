@@ -33,7 +33,7 @@
                                             <div class="font-35 text-success"><i class='bx bxs-check-circle'></i>
                                             </div>
                                             <div class="ms-6">
-                                                <h6 class="mb-0 text-success" style="text-align: left">Mensaje</h6>
+                                                <h6 class="mb-0 text-success" style="text-align: left">Documento Encontrado</h6>
                                                     <div>Puede descargar el documento en el siguiente enlace:
                                                         @foreach ($doc as $d)
                                                             <a target="blank_" href="{{asset('storage/documentos/'.$d->documento)}}">{{$d->documento}}</a>
@@ -54,7 +54,7 @@
                                             <div class="font-35 text-white"><i class='bx bxs-message-square-x'></i>
                                             </div>
                                             <div class="ms-6">
-                                                <h6 class="mb-0 text-danger" style="text-align: left">Mensaje</h6>
+                                                <h6 class="mb-0 text-danger" style="text-align: left">Documento No encontrado</h6>
                                                 <div>CVD No válido, intente con otro código</div>
                                             </div>
                                         </div>
