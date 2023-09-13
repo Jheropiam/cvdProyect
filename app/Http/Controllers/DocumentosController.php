@@ -20,8 +20,10 @@ class DocumentosController extends Controller
      */
     public function index()
     {
-        $documentos = documentos::all();
-        return view('documentos.index',['documentos'=>$documentos]);
+        $documentos = documentos::all()->where('estado',true);
+        $eliminado='';
+        $creado='';
+        return view('documentos.index',['documentos'=>$documentos,'eliminado'=>$eliminado,'creado'=>$creado]);
     }
 
     /**
@@ -36,11 +38,9 @@ class DocumentosController extends Controller
      * Store a newly created resource in storage.
      */
 
-     public function fillPDFFile_withCVDCode($file, $outputFilePath,$ultimo_id)
+     public function fillPDFFile_withCVDCode($file, $outputFilePath,$ultimo_id,$fecha_registro)
      
      {
-
-
         $fpdi = new FPDI;
         $count = $fpdi->setSourceFile($file);
         $ajuste=-5;
@@ -48,7 +48,7 @@ class DocumentosController extends Controller
         
         // Genera el código QR
         $path=public_path('storage/qrcodes/'.$codigo_cvd.'.png');    
-        $texto_codificar=asset('storage/qrcodes/'.$codigo_cvd.'.png');//Aqui será cambiado a la url de 
+        $texto_codificar=asset('https://consultacvd.regionloreto.gob.pe/verifica-cvd');//Aqui será cambiado a la url de 
         // Guarda el código QR en el disco público
         $Qrlib = new Qrcodeg($texto_codificar,$path);
         $Qrlib->makeQR();
@@ -62,25 +62,25 @@ class DocumentosController extends Controller
             $fpdi->SetFont("Courier", "", 8);
             $fpdi->SetTextColor(0,0,0);
             $alto_pagina=$fpdi->GetPageHeight();
-            $text = "Esta  es  una  representación  impresa  cuya autenticidad  puede  ser";
-            $fpdi->Text(40,$alto_pagina-30+$ajuste,utf8_decode($text));
-            $text = "contrastada  con  la representación  imprimible localizada en la  sede";
-            $fpdi->Text(40,$alto_pagina-27+$ajuste,utf8_decode($text));
-            $text = "digital  de la Presidencia  del consejo de ministros.  La verificación";
-            $fpdi->Text(40,$alto_pagina-24+$ajuste,utf8_decode($text));
-            $text = "puede ser efectuada a partir del  05/01/2021 hasta el 05/04/2021. Base";
-            $fpdi->Text(40,$alto_pagina-21+$ajuste,utf8_decode($text));
-            $text = "Legal:  Decreto Legislativo N° 1412, Decreto  Supremo  N° 029-2021-PCM";
-            $fpdi->Text(40,$alto_pagina-18+$ajuste,utf8_decode($text));
-            $text = "yqrcode la Directiva N° 002-2021-PCM/SGTD";
-            $fpdi->Text(40,$alto_pagina-15+$ajuste,utf8_decode($text));
-            $fpdi->SetFont("Courier", "B", 8);
+            $text = "Esta es una representación impresa cuya autenticidad puede  ser  contrastada";
+            $fpdi->Text(38,$alto_pagina-30+$ajuste,utf8_decode($text));
+            $text = "con la representación imprimible localizada en la sede digital  del Gobierno";
+            $fpdi->Text(38,$alto_pagina-27+$ajuste,utf8_decode($text));
+            $text = "Regional de Loreto. La representación imprimible ha sido generada atendiendo";
+            $fpdi->Text(38,$alto_pagina-24+$ajuste,utf8_decode($text));
+            $text = "lo dispuesto en la Directiva N° 003-2021-PCM/SGTD.La verificación  puede ser";
+            $fpdi->Text(38,$alto_pagina-21+$ajuste,utf8_decode($text));
+            $text = "efectuada a partir del ". $fecha_registro. ". Base Legal: Decreto  Legislativo N° 1412,";
+            $fpdi->Text(38,$alto_pagina-18+$ajuste,utf8_decode($text));
+            $text = "Decreto Supremo N° 029-2021-PCM y la Directiva N° 002-2021-PCM/SGTD.";
+            $fpdi->Text(38,$alto_pagina-15+$ajuste,utf8_decode($text));
+            $fpdi->SetFont("Courier", "B", 10);
             $text = "URL: https://consultacvd.regionloreto.gob.pe/verifica-cvd";
-            $fpdi->Text(40,$alto_pagina-9+$ajuste,utf8_decode($text));
+            $fpdi->Text(38,$alto_pagina-9+$ajuste,utf8_decode($text));
             $text = "CVD: ".$codigo_cvd;
-            $fpdi->Text(40,$alto_pagina-6+$ajuste,utf8_decode($text));
+            $fpdi->Text(38,$alto_pagina-6+$ajuste,utf8_decode($text));
             
-            $fpdi->Image('storage/qrcodes/'.$codigo_cvd.'.png', 160, $alto_pagina-34+$ajuste); //inserta qrcode en archivo  
+            $fpdi->Image('storage/qrcodes/'.$codigo_cvd.'.png', 170, $alto_pagina-30+$ajuste); //inserta qrcode en archivo  
             $doc=documentos::findOrFail($ultimo_id);
             $doc->cvd=$codigo_cvd;
             $doc->save();
@@ -120,13 +120,17 @@ class DocumentosController extends Controller
         $obj->user_id=auth()->user()->id;
         $obj->save();
         $ultimo_id=$obj->id;
+        $fecha_registro=$obj->fecha;
 
         $filePath = public_path('storage/documentos/'.$archivo);
         $outputFilePath = public_path('storage/documentos/'.$archivo);
-        $this->fillPDFFile_withCVDCode($filePath, $outputFilePath,$ultimo_id);
+        $this->fillPDFFile_withCVDCode($filePath, $outputFilePath,$ultimo_id,$fecha_registro);
         
         // return response()->file($outputFilePath);
-        return redirect()->route('documentos.index');
+        $documentos = documentos::all()->where('estado',true);
+        $creado='si';
+            $eliminado='';
+        return view('documentos.index',['documentos'=>$documentos,'creado'=>$creado,'eliminado'=>$eliminado]);
 
 
     }
@@ -169,8 +173,12 @@ class DocumentosController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(documentos $documentos)
+    public function destroy(Request $request)
     {
-        //
+        $id=request('iddocumento');
+        $doc=documentos::findOrFail($id);
+        $doc->estado=0;
+        $doc->save();
+        return redirect()->route('documentos.index')->with('mensaje','ok');
     }
 }

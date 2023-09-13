@@ -44,6 +44,7 @@ Route::get('fill-data-pdf', [DocumentosController::class,'index']);
 Route::get('/documentos/create', [DocumentosController::class,'create'])->middleware(['auth'])->name('documentos.create');
 Route::post('/documentos/store', [DocumentosController::class,'store'])->middleware(['auth'])->name('documentos.store');
 Route::get('/documentos/index', [DocumentosController::class,'index'])->middleware(['auth'])->name('documentos.index');
+Route::post('/documentos/destroy', [DocumentosController::class,'destroy'])->middleware(['auth'])->name('documentos.destroy');
 Route::post('/verifica-cvd', [DocumentosController::class,'show'])->name('documentos.show');
 //Usuarios
 Route::get('/usuarios/index', [UserController::class,'index'])->middleware(['auth'])->name('usuarios.index');

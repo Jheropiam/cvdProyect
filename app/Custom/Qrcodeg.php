@@ -17,7 +17,7 @@ class Qrcodeg
 
     public function makeQR(): string
     {
-        \QRcode::png($this->name, $this->path, QR_ECLEVEL_L, 3, 2);
+        \QRcode::png($this->name, $this->path, QR_ECLEVEL_L, 2, 1);
         return $this->path; 
     }
 
