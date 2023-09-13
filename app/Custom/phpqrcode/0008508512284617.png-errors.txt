@@ -1,0 +1,1 @@
+2023-09-12 18:45:22: imagepng(/home/alexvasquez/Desktop/Proyectos/cvdProyect/storage/qrcodes/0008508512284617.png): Failed to open stream: No such file or directory

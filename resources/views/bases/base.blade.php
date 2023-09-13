@@ -25,7 +25,6 @@
 	<link rel="stylesheet" href="../../../assets/css/semi-dark.css" />
 	<link rel="stylesheet" href="../../../assets/css/header-colors.css" />
     
-    
 
     @yield('extra_css')
     <title>CVD</title>
@@ -60,7 +59,7 @@
                             <div class="menu-title">Aplicaciones</div>
                         </a>
                         <ul>
-                            <li> <a href="index.html"><i class="bx bx-right-arrow-alt"></i>Listar</a>
+                            <li> <a href="{{route('documentos.index')}}"><i class="bx bx-right-arrow-alt"></i>Listar</a>
                             </li>
                             <li> <a href="{{route('documentos.create')}}"><i class="bx bx-right-arrow-alt"></i>Subir</a>
                             </li>

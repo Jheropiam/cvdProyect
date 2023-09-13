@@ -42,7 +42,7 @@ Route::get('fill-data-pdf', [DocumentosController::class,'index']);
 //Documentos
 Route::get('/documentos/create', [DocumentosController::class,'create'])->middleware(['auth'])->name('documentos.create');
 Route::post('/documentos/store', [DocumentosController::class,'store'])->middleware(['auth'])->name('documentos.store');
-
+Route::get('/documentos/index', [DocumentosController::class,'index'])->middleware(['auth'])->name('documentos.index');
 //Usuarios
 Route::get('/usuarios/index', [UserController::class,'index'])->middleware(['auth'])->name('usuarios.index');
 Route::get('/usuarios/edit/{id}', [UserController::class,'edit'])->middleware(['auth'])->name('usuarios.edit');
