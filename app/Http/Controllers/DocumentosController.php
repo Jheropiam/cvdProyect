@@ -9,7 +9,7 @@ use setasign\Fpdi\Fpdi;
 
 use App\Custom\CvdController;//de ginovski
 use App\Custom\Qrcodeg;//de ginovski
-
+use DB;
 // use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 
@@ -75,7 +75,7 @@ class DocumentosController extends Controller
             $text = "yqrcode la Directiva N° 002-2021-PCM/SGTD";
             $fpdi->Text(40,$alto_pagina-15+$ajuste,utf8_decode($text));
             $fpdi->SetFont("Courier", "B", 8);
-            $text = "URL: https://codigocvd.regionloreto.gob.pe/verifica-cvd";
+            $text = "URL: https://consultacvd.regionloreto.gob.pe/verifica-cvd";
             $fpdi->Text(40,$alto_pagina-9+$ajuste,utf8_decode($text));
             $text = "CVD: ".$codigo_cvd;
             $fpdi->Text(40,$alto_pagina-6+$ajuste,utf8_decode($text));
@@ -136,9 +136,18 @@ class DocumentosController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(documentos $documentos)
+    public function show()
     {
-        //
+        $codigo=request('codigo');
+        $doc=documentos::where('cvd','=',$codigo)
+        ->get();
+        if ($doc->count()>0){
+            $msje='existe';
+        }else{
+            $msje='noexiste';
+        }
+        return view('plantillas.home_public',['mensaje'=>$msje,'doc'=>$doc]);
+
     }
 
     /**

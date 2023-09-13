@@ -11,6 +11,12 @@ class LoginController extends Controller
         return view('usuarios.login');
     }
     
+    public function index(){
+        $doc='';
+        $mensaje='';
+        return view('plantillas.home_public',['mensaje'=>$mensaje,'doc'=>$doc]);
+    }
+
     public function login(Request $request)
     {
         $credentials = $request->only('email','password');
