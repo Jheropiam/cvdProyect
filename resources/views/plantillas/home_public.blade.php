@@ -23,7 +23,7 @@
                     </div>
                 </form>
                     <div class="col-sm-12" style="text-align-last: right">
-                        <p><a href="{{route('usuarios.login')}}">Acceder</a></p>
+                        <p><a href="{{route('login')}}">Acceder</a></p>
                     </div>
 
 
