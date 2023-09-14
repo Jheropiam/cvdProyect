@@ -32,16 +32,16 @@
                                             </div>
                                             <div class="ms-6">
                                                 <h6 class="mb-0 text-success" style="text-align: left">Documento Encontrado</h6>
-                                                    <div>Puede descargar el documento en el siguiente enlace:
+                                                    <div class="text-justify">Puede descargar el documento en el siguiente enlace:
                                                         @foreach ($doc as $d)
-                                                            <a target="blank_" href="{{asset('storage/documentos/'.$d->documento)}}">{{$d->documento}}</a>
+                                                            <a target="blank_" class="text-justify" href="{{asset('storage/documentos/'.$d->documento)}}">{{$d->documento}}</a>
                                                             y el Documento Electrónico adjunto:
-                                                            <a target="blank_" href="{{asset('storage/documentos/'.$d->documento_adjunto)}}">{{$d->documento_adjunto}}</a>
+                                                            <a target="blank_" class="text-justify" href="{{asset('storage/documentos/'.$d->documento_adjunto)}}">{{$d->documento_adjunto}}</a>
                                                         @endforeach
                                                 </div>
                                             </div>
                                         </div>
-                                        
+                    
                                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                     </div>
                                 </div>
@@ -54,7 +54,7 @@
                                             </div>
                                             <div class="ms-6">
                                                 <h6 class="mb-0 text-danger" style="text-align: left">Documento No encontrado</h6>
-                                                <div>CVD No válido, intente con otro código</div>
+                                                <div class="text-justify">CVD No válido, intente con otro código</div>
                                             </div>
                                         </div>
                                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
