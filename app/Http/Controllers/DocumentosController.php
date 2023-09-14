@@ -90,9 +90,6 @@ class DocumentosController extends Controller
   
      }
 
-
-
-
     public function store(Request $request)
     {
         $obj = new documentos();
