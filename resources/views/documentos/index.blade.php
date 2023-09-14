@@ -45,7 +45,7 @@
             <h5>Lista de Documentos con código CVD</h5>
 
         </div>
-        <div class="col-sm-6" style="text-align:right">
+        <div class="col-sm-6 mt-2 mb-2" style="text-align:right">
             <a href="{{route('documentos.create')}}" class="btn btn-primary btn-sm"><i class="bx bx-plus"></i>Nuevo</a>
         </div>
     </div>
@@ -107,6 +107,9 @@
     <script>
         $("#DTdocumentos").DataTable({
             order:[0],
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json'
+            }
         });
 
         $(document).on("click",".btneliminar",function (e) { 

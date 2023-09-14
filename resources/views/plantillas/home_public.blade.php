@@ -1,21 +1,18 @@
 @extends('bases.base_public')
-@section('extra_css')
-    
-@endsection
 @section('content')
 <div class="content" style="text-align: -webkit-center">
-    <div class="card" style="width: 50%;margin-top:130px;">
-        <div class="card-body" >
-            <div class="row" style="place-content:center">
+    <div class="row justify-content-center mt-4">
+        <div class="card col-md-7 col-sm-6 p-3">
+            <div class="row">
                 <form action="{{route('documentos.show')}}" method="POST" id="consulta"> @csrf
-                    
                     <h3>Servicio de verificación de  representaciones impresas</h3>
+                    <h4>Gobierno Regional de Loreto</h4>
+                    <hr/>
                     <p>Ingrese el codigo CVD</p>
-                    <input type="text" name="codigo" class="form-control form-control-lg" placeholder="0015 3824 1828 2104" style="width: 550px;text-align:center" required>
-                    
+                    <input type="text" name="codigo" class="form-control form-control-md text-center" placeholder="0015 3824 1828 2104" required>
                     <br>
-                    <div class="content">
-                        <button type="submit" class="btn btn-primary btn-lg g-recaptcha" 
+                    <div class="col-md-12- col-sm-12 ">
+                        <button type="submit" class="btn btn-primary btn-lg form-control g-recaptcha" 
                         data-sitekey="6Lc6JCEoAAAAAPnl2uTh91F2LXkHuRvpGwPYV9F8" 
                         data-callback='onSubmit' 
                         data-action='submit'
@@ -25,8 +22,6 @@
                     <div class="col-sm-12" style="text-align-last: right">
                         <p><a href="{{route('login')}}">Acceder</a></p>
                     </div>
-
-
                     <div class="row">
                         <div class="col-sm-12">
                             @if($mensaje=='existe')
@@ -37,16 +32,16 @@
                                             </div>
                                             <div class="ms-6">
                                                 <h6 class="mb-0 text-success" style="text-align: left">Documento Encontrado</h6>
-                                                    <div>Puede descargar el documento en el siguiente enlace:
+                                                    <div class="text-justify">Puede descargar el documento en el siguiente enlace:
                                                         @foreach ($doc as $d)
-                                                            <a target="blank_" href="{{asset('storage/documentos/'.$d->documento)}}">{{$d->documento}}</a>
+                                                            <a target="blank_" class="text-justify" href="{{asset('storage/documentos/'.$d->documento)}}">{{$d->documento}}</a>
                                                             y el Documento Electrónico adjunto:
-                                                            <a target="blank_" href="{{asset('storage/documentos/'.$d->documento_adjunto)}}">{{$d->documento_adjunto}}</a>
+                                                            <a target="blank_" class="text-justify" href="{{asset('storage/documentos/'.$d->documento_adjunto)}}">{{$d->documento_adjunto}}</a>
                                                         @endforeach
                                                 </div>
                                             </div>
                                         </div>
-                                        
+                    
                                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                     </div>
                                 </div>
@@ -59,7 +54,7 @@
                                             </div>
                                             <div class="ms-6">
                                                 <h6 class="mb-0 text-danger" style="text-align: left">Documento No encontrado</h6>
-                                                <div>CVD No válido, intente con otro código</div>
+                                                <div class="text-justify">CVD No válido, intente con otro código</div>
                                             </div>
                                         </div>
                                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
