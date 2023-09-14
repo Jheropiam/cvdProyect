@@ -9,7 +9,7 @@
                     <h4>Gobierno Regional de Loreto</h4>
                     <hr/>
                     <p>Ingrese el codigo CVD</p>
-                    <input type="text" name="codigo" class="form-control form-control-md text-center" placeholder="0015 3824 1828 2104" required>
+                    <input type="text" name="codigo" id="codigo" class="form-control form-control-md text-center" placeholder="0015 3824 1828 2104" required>
                     <br>
                     <div class="col-md-12- col-sm-12 ">
                         <button type="submit" class="btn btn-primary btn-lg form-control g-recaptcha" 
@@ -19,9 +19,7 @@
                         style="max-width: 40%;min-width:250px"><i class="bx bx-search"></i>Buscar Documento</button>
                     </div>
                 </form>
-                    <div class="col-sm-12" style="text-align-last: right">
-                        <p><a href="{{route('login')}}">Acceder</a></p>
-                    </div>
+                    
                     <div class="row">
                         <div class="col-sm-12">
                             @if($mensaje=='existe')
@@ -63,6 +61,9 @@
                             @endif
                         </div>
                     </div>
+                    <div class="col-sm-12" style="text-align-last: right">
+                        <p><a href="{{route('login')}}" class="btn btn-danger btn-sm"><i class="bx bx-user-circle"></i>Acceder</a></p>
+                    </div>
             </div>
         </div>
     </div>
@@ -72,9 +73,10 @@
 @endsection
 
 @section('extra_js')
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 <script src="https://www.google.com/recaptcha/api.js"></script> 
 <script>
+    $("#codigo").mask("0000 0000 0000 0000");
     function onSubmit(token) {
       document.getElementById("consulta").submit();
     }
