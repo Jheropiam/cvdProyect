@@ -19,8 +19,8 @@
                         style="max-width: 40%;min-width:250px"><i class="bx bx-search"></i>Buscar Documento</button>
                     </div>
                 </form>
-                    <div class="col-md-12 col-sm-12 d-flex justify-content-end mt-4">
-                        <p><a class="btn btn-dark btn-sm px-1" href="{{route('usuarios.login')}}"><i class="bx bx-user mr-1"></i> Acceder</a></p>
+                    <div class="col-sm-12" style="text-align-last: right">
+                        <p><a href="{{route('login')}}">Acceder</a></p>
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
