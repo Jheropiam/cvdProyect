@@ -1,32 +1,27 @@
 @extends('bases.base_public')
-@section('extra_css')
-    
-@endsection
 @section('content')
 <div class="content" style="text-align: -webkit-center">
-    <div class="card" style="width: 50%;margin-top:130px;">
-        <div class="card-body" >
-            <div class="row" style="place-content:center">
+    <div class="row justify-content-center mt-4">
+        <div class="card col-md-7 col-sm-6 p-3">
+            <div class="row">
                 <form action="{{route('documentos.show')}}" method="POST" id="consulta"> @csrf
-                    
                     <h3>Servicio de verificación de  representaciones impresas</h3>
+                    <h4>Gobierno Regional de Loreto</h4>
+                    <hr/>
                     <p>Ingrese el codigo CVD</p>
-                    <input type="text" name="codigo" class="form-control form-control-lg" placeholder="0015 3824 1828 2104" style="width: 550px;text-align:center" required>
-                    
+                    <input type="text" name="codigo" class="form-control form-control-md text-center" placeholder="0015 3824 1828 2104" required>
                     <br>
-                    <div class="content">
-                        <button type="submit" class="btn btn-primary btn-lg g-recaptcha" 
+                    <div class="col-md-12- col-sm-12 ">
+                        <button type="submit" class="btn btn-primary btn-lg form-control g-recaptcha" 
                         data-sitekey="6Lc6JCEoAAAAAPnl2uTh91F2LXkHuRvpGwPYV9F8" 
                         data-callback='onSubmit' 
                         data-action='submit'
                         style="max-width: 40%;min-width:250px"><i class="bx bx-search"></i>Buscar Documento</button>
                     </div>
                 </form>
-                    <div class="col-sm-12" style="text-align-last: right">
-                        <p><a href="{{route('usuarios.login')}}">Acceder</a></p>
+                    <div class="col-md-12 col-sm-12 d-flex justify-content-end mt-4">
+                        <p><a class="btn btn-dark btn-sm px-1" href="{{route('usuarios.login')}}"><i class="bx bx-user mr-1"></i> Acceder</a></p>
                     </div>
-
-
                     <div class="row">
                         <div class="col-sm-12">
                             @if($mensaje=='existe')
