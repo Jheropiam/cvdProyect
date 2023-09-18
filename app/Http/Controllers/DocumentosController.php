@@ -142,11 +142,14 @@ class DocumentosController extends Controller
     public function show()
     {
         $codigo=request('codigo');
+        $codigo=Str_replace($codigo,' ','');
         $doc=documentos::where('cvd','=',$codigo)
         ->get();
+        
         if ($doc->count()>0){
             $msje='existe';
         }else{
+            dd($codigo);
             $msje='noexiste';
         }
         return view('plantillas.home_public',['mensaje'=>$msje,'doc'=>$doc]);
