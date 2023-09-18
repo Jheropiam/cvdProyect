@@ -12,7 +12,6 @@ use App\Custom\Qrcodeg;//de ginovski
 use DB;
 // use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
-
 class DocumentosController extends Controller
 {
     /**

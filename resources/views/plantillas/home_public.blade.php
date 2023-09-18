@@ -5,13 +5,13 @@
         <div class="card col-md-7 col-sm-6 p-3">
             <div class="row">
                 <form action="{{route('documentos.show')}}" method="POST" id="consulta"> @csrf
-                    <h3>Servicio de verificación de  representaciones impresas</h3>
-                    <h4>Gobierno Regional de Loreto</h4>
+                    <h3 style="text-align: center">Servicio de verificación de  representaciones impresas</h3>
+                    <h4 style="text-align: center">Gobierno Regional de Loreto</h4>
                     <hr/>
-                    <p>Ingrese el codigo CVD</p>
+                    <p style="text-align: center">Ingrese el codigo CVD</p>
                     <input type="text" name="codigo" id="codigo" class="form-control form-control-md text-center" placeholder="0015 3824 1828 2104" required>
                     <br>
-                    <div class="col-md-12- col-sm-12 ">
+                    <div class="col-md-12- col-sm-12 " style="text-align: center">
                         <button type="submit" class="btn btn-primary btn-lg form-control g-recaptcha" 
                         data-sitekey="6Lc6JCEoAAAAAPnl2uTh91F2LXkHuRvpGwPYV9F8" 
                         data-callback='onSubmit' 
@@ -62,6 +62,9 @@
                         </div>
                     </div>
                     <div class="col-sm-12" style="text-align-last: right">
+                        <br>
+                        <br>
+                        <br>
                         <p><a href="{{route('login')}}" class="btn btn-danger btn-sm"><i class="bx bx-user-circle"></i>Acceder</a></p>
                     </div>
             </div>

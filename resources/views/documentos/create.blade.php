@@ -5,7 +5,7 @@
 @endsection
 @section('content')
 <div class="row" style="text-align: center">
-    <h5>Cargue aquí su documento (Max. 1 Documento)</h5>
+    <h5>Cargue aquí su documento</h5>
     <div class="row">
         <div class="col-xl-9 mx-auto">
             <hr/>
@@ -13,10 +13,10 @@
                 <div class="card-body">
                     <form action="{{route('documentos.store')}}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <label for="">Seleccione Documento para CVD</label>
-                        <input id="documento" class="form-control" type="file" name="documento" accept=".pdf" required>
-                        <label for="">Seleccione Documento Adjunto(Firmado Electrónicamente)</label>
-                        <input id="documento_adjunto" class="form-control" type="file" name="documento_adjunto" accept=".pdf" required>
+                        <label for="">Seleccione Documento para CVD (Max. 20MB)</label>
+                        <input id="documento" class="form-control" type="file" name="documento" id="documento" accept=".pdf" required>
+                        <label for="">Seleccione Documento Adjunto(Firmado Electrónicamente Max. 20MB)</label>
+                        <input id="documento_adjunto" class="form-control" type="file" name="documento_adjunto" id="documento_adjunto" accept=".pdf" required>
                         <input type="text" id="fecha" name="fecha" hidden>
                         <input type="hora" id="hora" name="hora" hidden>
                         <br>
@@ -42,13 +42,17 @@
         var fecha = new Date();
         document.getElementById("fecha").value = fecha.toJSON().slice(0, 10);
         
-        // input.addEventListener('change', function(evt){
-        //     var i = 0, len = input.files.length, img, reader, file;
-        //     if (len > 2) {
-        //         alert('Solo puedes seleccionar 2 imágenes');
-        //         input.value = '';
-        //         return false;
-        //     }
+
+        var imgsize = document.getElementsByClassName("documento")[0].files[0].size;
+        if(imgsize > 1000){
+            alert('El documento supera los 20MB.');
+        }
+        
+        var imgsize2 = document.getElementsByClassName("documento_adjunto")[0].files[0].size;
+        if(imgsize2 > 1000){
+            alert('El documento adjunto supera los 20MB.');
+        }
+        
 
     </script>
 
