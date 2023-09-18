@@ -6,6 +6,7 @@ use App\Models\documentos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use setasign\Fpdi\Fpdi;
+use Illuminate\Support\Str;
 
 use App\Custom\CvdController;//de ginovski
 use App\Custom\Qrcodeg;//de ginovski
@@ -134,22 +135,18 @@ class DocumentosController extends Controller
 
     }
 
-
-
     /**
      * Display the specified resource.
      */
-    public function show()
+    public function show(Request $request)
     {
         $codigo=request('codigo');
-        $codigo=Str_replace($codigo,' ','');
+        $codigo=str_replace(' ', '', $codigo);
         $doc=documentos::where('cvd','=',$codigo)
         ->get();
-        
         if ($doc->count()>0){
             $msje='existe';
         }else{
-            dd($codigo);
             $msje='noexiste';
         }
         return view('plantillas.home_public',['mensaje'=>$msje,'doc'=>$doc]);
