@@ -12,10 +12,8 @@
                     <input type="text" name="codigo" id="codigo" class="form-control form-control-md text-center" placeholder="0015 3824 1828 2104" required>
                     <br>
                     <div class="col-md-12- col-sm-12 " style="text-align: center">
-                        <button type="submit" class="btn btn-primary btn-lg form-control g-recaptcha" 
-                        data-sitekey="6Lc6JCEoAAAAAPnl2uTh91F2LXkHuRvpGwPYV9F8" 
-                        data-callback='onSubmit' 
-                        data-action='submit'
+                        <button type="submit" class="btn btn-primary btn-lg form-control" 
+                        
                         style="max-width: 40%;min-width:250px"><i class="bx bx-search"></i>Buscar Documento</button>
                     </div>
                 </form>
