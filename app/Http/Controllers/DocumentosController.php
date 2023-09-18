@@ -145,6 +145,7 @@ class DocumentosController extends Controller
         $codigo=Str_replace($codigo,' ','');
         $doc=documentos::where('cvd','=',$codigo)
         ->get();
+        
         if ($doc->count()>0){
             $msje='existe';
         }else{
