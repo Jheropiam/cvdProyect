@@ -13,10 +13,13 @@
                 <div class="card-body">
                     <form action="{{route('documentos.store')}}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <label for="">Seleccione Documento para CVD (Max. 20MB)</label>
-                        <input id="documento" class="form-control" type="file" name="documento" id="documento" accept=".pdf" required>
-                        <label for="">Seleccione Documento Adjunto(Firmado Electrónicamente Max. 20MB)</label>
-                        <input id="documento_adjunto" class="form-control" type="file" name="documento_adjunto" id="documento_adjunto" accept=".pdf" required>
+                        <label for="">Seleccione Documento.pdf para CVD (Max. 10MB)</label>
+                        <input id="documento" class="form-control" type="file" name="documento" id="documento" onchange="validar_doc('documento','mensajeError')" accept=".pdf" required>
+                        <p id="mensajeError" style="color: red;"></p>
+
+                        <label for="">Seleccione Documento Adjunto.pdf(Firmado Electrónicamente Max. 10MB)</label>
+                        <input id="documento_adjunto" class="form-control" type="file" name="documento_adjunto" onchange="validar_doc('documento_adjunto','mensajeError2')" id="documento_adjunto" accept=".pdf" required>
+                        <p id="mensajeError2" style="color: red;"></p>
                         <input type="text" id="fecha" name="fecha" hidden>
                         <input type="hora" id="hora" name="hora" hidden>
                         <br>
@@ -33,7 +36,11 @@
 @endsection
 @section('extra_js')
     <script>
+
+
+
         setInterval(muestrahora, 1000);
+
         function muestrahora() { 
             var hoy = new Date();
             hora = ('0' + hoy.getHours()).slice(-2) + ':' + ('0' + hoy.getMinutes()).slice(-2);
@@ -42,17 +49,30 @@
         var fecha = new Date();
         document.getElementById("fecha").value = fecha.toJSON().slice(0, 10);
         
+               
+        function validar_doc(input,mensaje) {
+            const archivoInput = document.getElementById(input);
+            const mensajeError = document.getElementById(mensaje);
+            // Verificar si se ha seleccionado un archivo
+            if (archivoInput.files.length === 0) {
+                mensajeError.textContent = 'Por favor, seleccione un archivo.';
+                return;
+            }
+            // Obtener el tamaño del archivo en bytes
+            const tamañoArchivo = archivoInput.files[0].size;
+            // Definir el tamaño máximo permitido (en este ejemplo, 5 MB)
+            const tamañoMaximo = 10 * 1024 * 1024; // 5 MB en bytes
 
-        var imgsize = document.getElementsByClassName("documento")[0].files[0].size;
-        if(imgsize > 1000){
-            alert('El documento supera los 20MB.');
+            // Verificar si el archivo supera el tamaño máximo
+            if (tamañoArchivo > tamañoMaximo) {
+                mensajeError.textContent = 'El archivo seleccionado es demasiado grande. El tamaño máximo permitido es de 10 MB.';
+                archivoInput.value = ''; // Borrar la selección del archivo
+            } else {
+                mensajeError.textContent = ''; // Limpiar mensaje de error si el archivo es válido
+            }
+            
         }
-        
-        var imgsize2 = document.getElementsByClassName("documento_adjunto")[0].files[0].size;
-        if(imgsize2 > 1000){
-            alert('El documento adjunto supera los 20MB.');
-        }
-        
+
 
     </script>
 
