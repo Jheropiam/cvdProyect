@@ -64,23 +64,23 @@ class DocumentosController extends Controller
                 $fpdi->SetTextColor(0,0,0);
                 $alto_pagina=$fpdi->GetPageHeight();
                 $text = "Esta es una representación impresa cuya autenticidad puede  ser  contrastada";
-                $fpdi->Text(38,$alto_pagina-30+$ajuste,utf8_decode($text));
+                $fpdi->Text(38,$alto_pagina-50+$ajuste,utf8_decode($text));
                 $text = "con la representación imprimible localizada en la sede digital  del Gobierno";
-                $fpdi->Text(38,$alto_pagina-27+$ajuste,utf8_decode($text));
+                $fpdi->Text(38,$alto_pagina-47+$ajuste,utf8_decode($text));
                 $text = "Regional de Loreto. La representación imprimible ha sido generada atendiendo";
-                $fpdi->Text(38,$alto_pagina-24+$ajuste,utf8_decode($text));
+                $fpdi->Text(38,$alto_pagina-44+$ajuste,utf8_decode($text));
                 $text = "lo dispuesto en la Directiva N° 003-2021-PCM/SGTD.La verificación  puede ser";
-                $fpdi->Text(38,$alto_pagina-21+$ajuste,utf8_decode($text));
+                $fpdi->Text(38,$alto_pagina-41+$ajuste,utf8_decode($text));
                 $text = "efectuada a partir del ". $fecha_registro. ". Base Legal: Decreto  Legislativo N° 1412,";
-                $fpdi->Text(38,$alto_pagina-18+$ajuste,utf8_decode($text));
+                $fpdi->Text(38,$alto_pagina-38+$ajuste,utf8_decode($text));
                 $text = "Decreto Supremo N° 029-2021-PCM y la Directiva N° 002-2021-PCM/SGTD.";
-                $fpdi->Text(38,$alto_pagina-15+$ajuste,utf8_decode($text));
+                $fpdi->Text(38,$alto_pagina-35+$ajuste,utf8_decode($text));
                 $fpdi->SetFont("Courier", "B", 10);
                 $text = "URL: https://consultacvd.regionloreto.gob.pe/verifica-cvd";
-                $fpdi->Text(38,$alto_pagina-9+$ajuste,utf8_decode($text));
+                $fpdi->Text(38,$alto_pagina-29+$ajuste,utf8_decode($text));
                 $text = "CVD: ".$codigo_cvd;
-                $fpdi->Text(38,$alto_pagina-6+$ajuste,utf8_decode($text));
-                $fpdi->Image('storage/qrcodes/'.$codigo_cvd.'.png', 170, $alto_pagina-30+$ajuste); //inserta qrcode en archivo  
+                $fpdi->Text(38,$alto_pagina-26+$ajuste,utf8_decode($text));
+                $fpdi->Image('storage/qrcodes/'.$codigo_cvd.'.png', 170, $alto_pagina-50+$ajuste); //inserta qrcode en archivo  
             }
             
         }
@@ -98,14 +98,14 @@ class DocumentosController extends Controller
         $obj = new documentos();
         $extension='';
         $archivo='';
-        if ($request->hasFile('documento_adjunto')){
-            $file = request('documento_adjunto')->getClientOriginalName();//archivo recibido
-            $filename = pathinfo($file, PATHINFO_FILENAME);//nombre archivo sin extension
-            $extension_adjunto = request('documento_adjunto')->getClientOriginalExtension();//extensión
-            $archivo= $filename.'_'.time().'.'.$extension_adjunto;//
-            request('documento_adjunto')->storeAs('documentos/',$archivo,'public');//refiere carpeta publica es el nombre de disco
-            $obj->documento_adjunto = $archivo;
-        }
+        // if ($request->hasFile('documento_adjunto')){
+        //     $file = request('documento_adjunto')->getClientOriginalName();//archivo recibido
+        //     $filename = pathinfo($file, PATHINFO_FILENAME);//nombre archivo sin extension
+        //     $extension_adjunto = request('documento_adjunto')->getClientOriginalExtension();//extensión
+        //     $archivo= $filename.'_'.time().'.'.$extension_adjunto;//
+        //     request('documento_adjunto')->storeAs('documentos/',$archivo,'public');//refiere carpeta publica es el nombre de disco
+        //     $obj->documento_adjunto = $archivo;
+        // }
         if ($request->hasFile('documento')){
             $file = request('documento')->getClientOriginalName();//archivo recibido
             $filename = pathinfo($file, PATHINFO_FILENAME);//nombre archivo sin extension
@@ -114,6 +114,7 @@ class DocumentosController extends Controller
             request('documento')->storeAs('documentos/',$archivo,'public');//refiere carpeta publica es el nombre de disco
             $obj->documento = $archivo;
         }
+        $obj->documento_adjunto='';
         $obj->extension=$extension;
         $obj->fecha = request('fecha');
         $obj->hora = request('hora');

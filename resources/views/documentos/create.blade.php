@@ -13,13 +13,13 @@
                 <div class="card-body">
                     <form action="{{route('documentos.store')}}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <label for="">Seleccione Documento.pdf para CVD (Max. 10MB)</label>
+                        <label for="">Seleccione Documento.pdf con firma electrónica para CVD(Max. 10MB)</label>
                         <input id="documento" class="form-control" type="file" name="documento" id="documento" onchange="validar_doc('documento','mensajeError')" accept=".pdf" required>
                         <p id="mensajeError" style="color: red;"></p>
 
-                        <label for="">Seleccione Documento Adjunto.pdf(Firmado Electrónicamente Max. 10MB)</label>
+                        {{-- <label for="">Seleccione Documento Adjunto.pdf(Max. 10MB)</label>
                         <input id="documento_adjunto" class="form-control" type="file" name="documento_adjunto" onchange="validar_doc('documento_adjunto','mensajeError2')" id="documento_adjunto" accept=".pdf" required>
-                        <p id="mensajeError2" style="color: red;"></p>
+                        <p id="mensajeError2" style="color: red;"></p> --}}
                         <input type="text" id="fecha" name="fecha" hidden>
                         <input type="hora" id="hora" name="hora" hidden>
                         <br>
