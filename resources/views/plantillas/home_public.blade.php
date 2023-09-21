@@ -33,8 +33,8 @@
                                                     <div class="text-justify">Puede descargar el documento en el siguiente enlace:
                                                         @foreach ($doc as $d)
                                                             <a target="blank_" class="text-justify" href="{{asset('storage/documentos/'.$d->documento)}}">{{$d->documento}}</a>
-                                                            y el Documento Electrónico adjunto:
-                                                            <a target="blank_" class="text-justify" href="{{asset('storage/documentos/'.$d->documento_adjunto)}}">{{$d->documento_adjunto}}</a>
+                                                            {{-- y el Documento Electrónico adjunto:
+                                                            <a target="blank_" class="text-justify" href="{{asset('storage/documentos/'.$d->documento_adjunto)}}">{{$d->documento_adjunto}}</a> --}}
                                                         @endforeach
                                                 </div>
                                             </div>
