@@ -44,8 +44,13 @@ class DocumentosController extends Controller
         $fpdi = new FPDI;
         $count = $fpdi->setSourceFile($file);
         $ajuste=-5;
-        $codigo_cvd=CvdController::makeCvd(); //aqui cambiar el código
-        
+        for ($i=0; $i < 1000; $i++) { 
+            # code..<.
+            $codigo_cvd=CvdController::makeCvd(); //aqui cambiar el código
+            if (Str::length($codigo_cvd)>16) {
+                dd($codigo_cvd);
+            }
+        }
         // Genera el código QR
         $path=public_path('storage/qrcodes/'.$codigo_cvd.'.png');    
         $texto_codificar=asset('https://consultacvd.regionloreto.gob.pe/verifica-cvd');//Aqui será cambiado a la url de 
