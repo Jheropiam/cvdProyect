@@ -17,6 +17,8 @@
                         data-callback='onSubmit' 
                         data-action='submit'
                         style="max-width: 40%;min-width:250px"><i class="bx bx-search"></i>Buscar Documento</button>
+                        {{-- <button type="submit" class="btn btn-primary btn-lg form-control" 
+                        style="max-width: 40%;min-width:250px"><i class="bx bx-search"></i>Buscar Documento</button> --}}
                     </div>
                 </form>
                     
@@ -33,8 +35,10 @@
                                                     <div class="text-justify">Puede descargar el documento en el siguiente enlace:
                                                         @foreach ($doc as $d)
                                                             <a target="blank_" class="text-justify" href="{{asset('storage/documentos/'.$d->documento)}}">{{$d->documento}}</a>
-                                                            {{-- y el Documento Electrónico adjunto:
-                                                            <a target="blank_" class="text-justify" href="{{asset('storage/documentos/'.$d->documento_adjunto)}}">{{$d->documento_adjunto}}</a> --}}
+                                                            @if ($d->documento_adjunto==!'')
+                                                                y el Documento adjunto:
+                                                                <a target="blank_" class="text-justify" href="{{asset('storage/documentos/'.$d->documento_adjunto)}}">{{$d->documento_adjunto}}</a>    
+                                                            @endif
                                                         @endforeach
                                                 </div>
                                             </div>

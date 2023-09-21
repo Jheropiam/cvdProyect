@@ -4,7 +4,7 @@
     <link href="../../../assets/plugins/Drag-And-Drop/dist/imageuploadify.min.css" rel="stylesheet" /> --}}
 @endsection
 @section('content')
-<div class="row" style="text-align: center">
+<div class="row" >
     <h5>Cargue aquí su documento</h5>
     <div class="row">
         <div class="col-xl-9 mx-auto">
@@ -13,13 +13,18 @@
                 <div class="card-body">
                     <form action="{{route('documentos.store')}}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <label for="">Seleccione Documento.pdf con firma electrónica para CVD(Max. 10MB)</label>
+                        <div class="input-group">
+                            <p style="color: red">(*)Obligatorio</p>
+                            <label for=""> -Seleccione Documento.pdf para CVD(Max. 10MB)</label>
+
+                        </div>
                         <input id="documento" class="form-control" type="file" name="documento" id="documento" onchange="validar_doc('documento','mensajeError')" accept=".pdf" required>
                         <p id="mensajeError" style="color: red;"></p>
 
-                        {{-- <label for="">Seleccione Documento Adjunto.pdf(Max. 10MB)</label>
-                        <input id="documento_adjunto" class="form-control" type="file" name="documento_adjunto" onchange="validar_doc('documento_adjunto','mensajeError2')" id="documento_adjunto" accept=".pdf" required>
-                        <p id="mensajeError2" style="color: red;"></p> --}}
+                        
+                        <label for="">Seleccione Documento Adjunto.pdf(Max. 10MB)</label>
+                        <input id="documento_adjunto" class="form-control" type="file" name="documento_adjunto" onchange="validar_doc('documento_adjunto','mensajeError2')" id="documento_adjunto" accept=".pdf">
+                        <p id="mensajeError2" style="color: red;"></p>
                         <input type="text" id="fecha" name="fecha" hidden>
                         <input type="hora" id="hora" name="hora" hidden>
                         <br>

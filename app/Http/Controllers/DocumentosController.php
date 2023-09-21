@@ -44,13 +44,8 @@ class DocumentosController extends Controller
         $fpdi = new FPDI;
         $count = $fpdi->setSourceFile($file);
         $ajuste=-5;
-        for ($i=0; $i < 1000; $i++) { 
-            # code..<.
-            $codigo_cvd=CvdController::makeCvd(); //aqui cambiar el código
-            if (Str::length($codigo_cvd)>16) {
-                dd($codigo_cvd);
-            }
-        }
+        $codigo_cvd=CvdController::makeCvd(); //aqui cambiar el código
+        
         // Genera el código QR
         $path=public_path('storage/qrcodes/'.$codigo_cvd.'.png');    
         $texto_codificar=asset('https://consultacvd.regionloreto.gob.pe/verifica-cvd');//Aqui será cambiado a la url de 
@@ -103,14 +98,16 @@ class DocumentosController extends Controller
         $obj = new documentos();
         $extension='';
         $archivo='';
-        // if ($request->hasFile('documento_adjunto')){
-        //     $file = request('documento_adjunto')->getClientOriginalName();//archivo recibido
-        //     $filename = pathinfo($file, PATHINFO_FILENAME);//nombre archivo sin extension
-        //     $extension_adjunto = request('documento_adjunto')->getClientOriginalExtension();//extensión
-        //     $archivo= $filename.'_'.time().'.'.$extension_adjunto;//
-        //     request('documento_adjunto')->storeAs('documentos/',$archivo,'public');//refiere carpeta publica es el nombre de disco
-        //     $obj->documento_adjunto = $archivo;
-        // }
+        
+        if ($request->hasFile('documento_adjunto')){
+            $file = request('documento_adjunto')->getClientOriginalName();//archivo recibido
+            $filename = pathinfo($file, PATHINFO_FILENAME);//nombre archivo sin extension
+            $extension_adjunto = request('documento_adjunto')->getClientOriginalExtension();//extensión
+            $archivo= $filename.'_'.time().'.'.$extension_adjunto;//
+            request('documento_adjunto')->storeAs('documentos/',$archivo,'public');//refiere carpeta publica es el nombre de disco
+            $obj->documento_adjunto = $archivo;
+        }
+
         if ($request->hasFile('documento')){
             $file = request('documento')->getClientOriginalName();//archivo recibido
             $filename = pathinfo($file, PATHINFO_FILENAME);//nombre archivo sin extension
@@ -119,7 +116,6 @@ class DocumentosController extends Controller
             request('documento')->storeAs('documentos/',$archivo,'public');//refiere carpeta publica es el nombre de disco
             $obj->documento = $archivo;
         }
-        $obj->documento_adjunto='';
         $obj->extension=$extension;
         $obj->fecha = request('fecha');
         $obj->hora = request('hora');
@@ -149,6 +145,7 @@ class DocumentosController extends Controller
         $codigo=request('codigo');
         $codigo=str_replace(' ', '', $codigo);
         $doc=documentos::where('cvd','=',$codigo)
+        ->where('estado','=',1)
         ->get();
         if ($doc->count()>0){
             $msje='existe';

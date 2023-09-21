@@ -58,7 +58,7 @@
                     <th>Acción</th>
                     <th>CVD</th>
                     <th>NombreDocumento(CVD)</th>
-                    {{-- <th>DocumentoAdjunto</th> --}}
+                    <th>DocumentoAdjunto</th>
                 </tr>
             </thead>
             <tbody>
@@ -70,7 +70,7 @@
                             {{$d->cvd}}
                         </td>
                         <td><a target="blank_" href="{{asset('storage/documentos/'.$d->documento)}}">{{$d->documento}}</a></td>
-                        {{-- <td><a target="blank_" href="{{asset('storage/documentos/'.$d->documento_adjunto)}}">{{$d->documento_adjunto}}</a></td> --}}
+                        <td><a target="blank_" href="{{asset('storage/documentos/'.$d->documento_adjunto)}}">{{$d->documento_adjunto}}</a></td>
                     </tr>
                 @endforeach
             </tbody>
