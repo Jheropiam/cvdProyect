@@ -17,6 +17,7 @@
                         data-callback='onSubmit' 
                         data-action='submit'
                         style="max-width: 40%;min-width:250px"><i class="bx bx-search"></i>Buscar Documento</button>
+                        
                         {{-- <button type="submit" class="btn btn-primary btn-lg form-control" 
                         style="max-width: 40%;min-width:250px"><i class="bx bx-search"></i>Buscar Documento</button> --}}
                     </div>
