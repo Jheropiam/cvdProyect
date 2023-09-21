@@ -79,7 +79,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 <script src="https://www.google.com/recaptcha/api.js"></script> 
 <script>
-    $("#codigo").mask("0000 0000 0000 0000");
+    $("#codigo").mask("00000000000000000");
     function onSubmit(token) {
       document.getElementById("consulta").submit();
     }
