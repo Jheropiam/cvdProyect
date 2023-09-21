@@ -63,7 +63,7 @@ class CvdController
             }
             $suma += $digito;
         }
-        $digitoVerificacion = (10 - ($suma % 10));
+        $digitoVerificacion = (10 - ($suma % 10)) % 10;
         
         return $digitoVerificacion;
     }
