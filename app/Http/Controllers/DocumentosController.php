@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\documentos;
+use App\Models\documentosadjuntos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use setasign\Fpdi\Fpdi;
@@ -21,9 +22,10 @@ class DocumentosController extends Controller
     public function index()
     {
         $documentos = documentos::all()->where('estado',true);
+        $documentos_adjuntos = documentosadjuntos::all();
         $eliminado='';
         $creado='';
-        return view('documentos.index',['documentos'=>$documentos,'eliminado'=>$eliminado,'creado'=>$creado]);
+        return view('documentos.index',['documentos'=>$documentos,'eliminado'=>$eliminado,'creado'=>$creado,'documentos_adjuntos'=>$documentos_adjuntos]);
     }
 
     /**
@@ -96,18 +98,11 @@ class DocumentosController extends Controller
     public function store(Request $request)
     {
         $obj = new documentos();
+        
         $extension='';
         $archivo='';
         
-        if ($request->hasFile('documento_adjunto')){
-            $file = request('documento_adjunto')->getClientOriginalName();//archivo recibido
-            $filename = pathinfo($file, PATHINFO_FILENAME);//nombre archivo sin extension
-            $extension_adjunto = request('documento_adjunto')->getClientOriginalExtension();//extensión
-            $archivo= $filename.'_'.time().'.'.$extension_adjunto;//
-            request('documento_adjunto')->storeAs('documentos/',$archivo,'public');//refiere carpeta publica es el nombre de disco
-            $obj->documento_adjunto = $archivo;
-        }
-
+        
         if ($request->hasFile('documento')){
             $file = request('documento')->getClientOriginalName();//archivo recibido
             $filename = pathinfo($file, PATHINFO_FILENAME);//nombre archivo sin extension
@@ -116,6 +111,7 @@ class DocumentosController extends Controller
             request('documento')->storeAs('documentos/',$archivo,'public');//refiere carpeta publica es el nombre de disco
             $obj->documento = $archivo;
         }
+
         $obj->extension=$extension;
         $obj->fecha = request('fecha');
         $obj->hora = request('hora');
@@ -124,16 +120,32 @@ class DocumentosController extends Controller
         $ultimo_id=$obj->id;
         $fecha_registro=$obj->fecha;
 
+        if ($request->hasFile('documento_adjunto')){
+            $files=$request->file('documento_adjunto');
+            foreach ($files as $f) {
+                $obj_adjuntos = new documentosadjuntos();
+                $file = $f->getClientOriginalName();//archivo recibido
+                $filename = pathinfo($file, PATHINFO_FILENAME);//nombre archivo sin extension
+                $extension_adjunto = $f->getClientOriginalExtension();//extensión
+                $archivo_adjunto= $filename.'_'.time().'.'.$extension_adjunto;//
+                $f->storeAs('documentos_adjuntos/',$archivo,'public');//refiere carpeta publica es el nombre de disco
+                $obj->documento_adjunto = $archivo_adjunto;
+                $obj_adjuntos->documentos_id=$ultimo_id;
+                $obj_adjuntos->documento=$archivo_adjunto;
+                $obj_adjuntos->extension=$extension_adjunto;
+                $obj_adjuntos->save();
+            }
+        }
+
         $filePath = public_path('storage/documentos/'.$archivo);
         $outputFilePath = public_path('storage/documentos/'.$archivo);
         $this->fillPDFFile_withCVDCode($filePath, $outputFilePath,$ultimo_id,$fecha_registro);
         
-        // return response()->file($outputFilePath);
         $documentos = documentos::all()->where('estado',true);
-        $creado='si';
-            $eliminado='';
-        return view('documentos.index',['documentos'=>$documentos,'creado'=>$creado,'eliminado'=>$eliminado]);
-
+        // $creado='si';
+        // $eliminado='';
+        return redirect()->route('documentos.index')->with('mensaje','Registro guardado');
+        // return view('documentos.index',['documentos'=>$documentos,'creado'=>$creado,'eliminado'=>$eliminado]);
 
     }
 
@@ -144,16 +156,20 @@ class DocumentosController extends Controller
     {
         $codigo=request('codigo');
         $codigo=str_replace(' ', '', $codigo);
-        $doc=documentos::where('cvd','=',$codigo)
-        ->where('estado','=',1)
+        $doc=documentos::where('cvd','=',$codigo)->where('estado','=',1)->get();
+        $id_doc=$doc->first();
+
+        $doc_adjuntos=documentosadjuntos::where('documentos_id','=',$id_doc->id)
+        ->select('documento')
         ->get();
+        // dd($doc_adjuntos);
+
         if ($doc->count()>0){
             $msje='existe';
         }else{
             $msje='noexiste';
         }
-        return view('plantillas.home_public',['mensaje'=>$msje,'doc'=>$doc]);
-
+        return view('plantillas.home_public',['mensaje'=>$msje,'doc'=>$doc,'doc_adjuntos'=>$doc_adjuntos]);
     }
 
     /**
@@ -181,6 +197,6 @@ class DocumentosController extends Controller
         $doc=documentos::findOrFail($id);
         $doc->estado=0;
         $doc->save();
-        return redirect()->route('documentos.index')->with('mensaje','ok');
+        return redirect()->route('documentos.index')->with('mensaje','Registro eliminado');
     }
 }

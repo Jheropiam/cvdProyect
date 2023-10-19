@@ -34,19 +34,45 @@
                                             <div class="ms-6">
                                                 <h6 class="mb-0 text-success" style="text-align: left">Documento Encontrado</h6>
                                                     <div class="text-justify">Puede descargar el documento en el siguiente enlace:
-                                                        @foreach ($doc as $d)
-                                                            <a target="blank_" class="text-justify" href="{{asset('storage/documentos/'.$d->documento)}}">{{$d->documento}}</a>
-                                                            @if ($d->documento_adjunto==!'')
-                                                                y el Documento adjunto:
-                                                                <a target="blank_" class="text-justify" href="{{asset('storage/documentos/'.$d->documento_adjunto)}}">{{$d->documento_adjunto}}</a>    
-                                                            @endif
-                                                        @endforeach
+                                                    </div>
                                                 </div>
                                             </div>
+                                            
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                         </div>
-                    
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                    </div>
+
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>documento</th>
+                                                    <th>adjuntos</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($doc as $d)
+                                                <tr>
+                                                    <td>#</td>
+                                                    <td>
+                                                        <a target="blank_" class="text-justify" href="{{asset('storage/documentos/'.$d->documento)}}">{{$d->documento}}</a>    
+                                                    </td>
+                                                    <td>
+                                                        @if (!$doc_adjuntos->isEmpty())
+                                                            @foreach ($doc_adjuntos as $da)
+                                                                {{-- {{ $loop->index + 1 }} --}}
+                                                                <a href="{{asset('storage/documentos_adjuntos/'.$da->documento)}}" class="text-justify" href="#">{{$da->documento}}</a>
+                                                                <br>
+                                                            @endforeach
+                                                        @else
+                                                            <p>No hay documentos adjuntos disponibles.</p>
+                                                        @endif
+                                                    </td>
+                                                    
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                        <br>
                                 </div>
                             @endif
                             @if($mensaje=='noexiste')

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DocumentosController;
+use App\Http\Controllers\DocumentosadjuntosController;
 
 
 /*
@@ -38,14 +39,17 @@ Route::get('/usuarios/login', [LoginController::class,'usuariologin'])->middlewa
 
 Route::get('fill-data-pdf', [DocumentosController::class,'index']);
 
-
+//Documentos Adjuntos
+Route::get('/documentosadjuntos/create/{id}', [DocumentosadjuntosController::class,'create'])->middleware(['auth'])->name('documentosadjuntos.create');
+Route::post('/documentosadjuntos/store', [DocumentosadjuntosController::class,'store'])->middleware(['auth'])->name('documentosadjuntos.store');
+Route::get('/documentosadjuntos/destroy', [DocumentosadjuntosController::class,'destroy'])->middleware(['auth'])->name('documentosadjuntos.destroy');
 
 //Documentos
 Route::get('/documentos/create', [DocumentosController::class,'create'])->middleware(['auth'])->name('documentos.create');
 Route::post('/documentos/store', [DocumentosController::class,'store'])->middleware(['auth'])->name('documentos.store');
 Route::get('/documentos/index', [DocumentosController::class,'index'])->middleware(['auth'])->name('documentos.index');
-Route::post('/documentos/destroy', [DocumentosController::class,'destroy'])->middleware(['auth'])->name('documentos.destroy');
 Route::post('/verifica-cvd', [DocumentosController::class,'show'])->name('documentos.show');
+Route::post('/documentos/destroy', [DocumentosController::class,'destroy'])->middleware(['auth'])->name('documentos.destroy');
 //Usuarios
 Route::get('/usuarios/index', [UserController::class,'index'])->middleware(['auth'])->name('usuarios.index');
 Route::get('/usuarios/edit/{id}', [UserController::class,'edit'])->middleware(['auth'])->name('usuarios.edit');

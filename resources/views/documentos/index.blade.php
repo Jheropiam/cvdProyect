@@ -11,36 +11,19 @@
 
     <div class="row">
         @if (session()->has('mensaje'))
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="alert border-0 border-start border-5 border-danger alert-dismissible fade show py-2">
-                    <div class="d-flex align-items-center">
-                        <div class="font-35 text-white"><i class='bx bxs-message-square-x'></i>
-                        </div>
-                        <div class="ms-6">
-                            <h6 class="mb-0 text-danger" style="text-align: left">Eliminado</h6>
-                            <div>El registro ha sido eliminado.</div>
-                        </div>
+            <div class="alert border-0 border-start border-5 border-success alert-dismissible fade show py-2">
+                <div class="d-flex align-items-center">
+                    <div class="font-35 text-success"><i class='bx bxs-check-circle'></i>
                     </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <div class="ms-3">
+                        <h6 class="mb-0 text-success">Mensaje</h6>
+                        <div>{{Session::get('mensaje')}}</div>
+                    </div>
                 </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        </div>
         @endif
         
-        @if ($creado=='si')
-        <div class="alert border-0 border-start border-5 border-success alert-dismissible fade show py-2">
-            <div class="d-flex align-items-center">
-                <div class="font-35 text-success"><i class='bx bxs-check-circle'></i>
-                </div>
-                <div class="ms-6">
-                    <h6 class="mb-0 text-success" style="text-align: left">Registrado</h6>
-                        <div>Los documentos se han registrado correctamente.</div>
-                </div>
-            </div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        @endif
         <div class="col-sm-6">
             <h5>Lista de Documentos con código CVD</h5>
 
@@ -58,7 +41,8 @@
                     <th>Acción</th>
                     <th>CVD</th>
                     <th>NombreDocumento(CVD)</th>
-                    <th>DocumentoAdjunto</th>
+                    <th>Documentos Adjuntos</th>
+                    <th>Nuevo Adjunto</th>
                 </tr>
             </thead>
             <tbody>
@@ -66,11 +50,18 @@
                     <tr>
                         <td> {{$d->id}} </td>
                         <td> <a href="/documentos/destroy/{{$d->id}}" class="btn btn-warning btn-danger btn-sm btneliminar">Eliminar</a></td>
+                        <td> {{$d->cvd}} </td>
+                        <td><a target="blank_" href="{{asset('storage/documentos/'.$d->documento)}}">{{$d->documento}}</a> </td>
                         <td>
-                            {{$d->cvd}}
+                            @foreach ($documentos_adjuntos as $da)
+                                @if ($da->documentos_id==$d->id)
+                                    <a target="blank_" href="{{asset('storage/documentos_adjuntos/'.$da->documento)}}">{{$da->documento}}</a>
+                                    <a href="{{route('documentosadjuntos.destroy',$da->id)}}" class="btn btn-outline-danger btn-sm btneliminar_adjunto"><i class="bx bx-trash"></i></a>
+                                    <br>
+                                @endif                                
+                            @endforeach
                         </td>
-                        <td><a target="blank_" href="{{asset('storage/documentos/'.$d->documento)}}">{{$d->documento}}</a></td>
-                        <td><a target="blank_" href="{{asset('storage/documentos/'.$d->documento_adjunto)}}">{{$d->documento_adjunto}}</a></td>
+                        <td> <a href="{{route('documentosadjuntos.create',$d->id)}}" class="btn btn-primary btn-sm"><i class="bx bx-plus"></i></a> </td>
                     </tr>
                 @endforeach
             </tbody>
@@ -97,6 +88,8 @@
     </div>
 </div>
 
+
+
 @endsection
 
 @section('extra_js')
@@ -118,6 +111,14 @@
             id = (fila).find('td:eq(0)').text();
             $("#iddocumento").val(id);
             $("#modaleliminar").modal('show');
+         })
+
+         $(document).on("click",".btneliminaradjunto",function (e) { 
+            e.preventDefault();
+            fila = $(this).closest("tr");
+            id = (fila).find('td:eq(0)').text();
+            $("#iddocumento_adjunto").val(id);
+            $("#modaleliminarDocumento").modal('show');
          })
     </script>
 @endsection
