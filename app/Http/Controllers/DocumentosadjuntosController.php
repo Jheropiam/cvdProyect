@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\documentosadjuntos;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DocumentosadjuntosController extends Controller
 {
@@ -76,6 +77,7 @@ class DocumentosadjuntosController extends Controller
         //
         $doc=documentosadjuntos::findOrFail($id);
         $doc->delete();
+        Storage::disk('public')->delete('documentos_adjuntos/'.$doc->documento);
         return redirect()->route('documentos.index')->with('mensaje','El documento fue eliminado');
     }
 }
