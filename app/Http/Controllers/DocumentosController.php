@@ -21,7 +21,10 @@ class DocumentosController extends Controller
      */
     public function index()
     {
-        $documentos = documentos::all()->where('estado',true);
+        $documentos = DB::table('documentos')
+        ->where('documentos.estado','=',true)
+        ->where('documentos.user_id','=',auth()->user()->id)
+        ->get();
         $documentos_adjuntos = documentosadjuntos::all();
         $eliminado='';
         $creado='';
