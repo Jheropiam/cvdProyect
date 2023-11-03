@@ -102,7 +102,6 @@ class DocumentosController extends Controller
         $extension='';
         $archivo='';
         
-        
         if ($request->hasFile('documento')){
             $file = request('documento')->getClientOriginalName();//archivo recibido
             $filename = pathinfo($file, PATHINFO_FILENAME);//nombre archivo sin extension
@@ -123,13 +122,14 @@ class DocumentosController extends Controller
         if ($request->hasFile('documento_adjunto')){
             $files=$request->file('documento_adjunto');
             foreach ($files as $f) {
+                
                 $obj_adjuntos = new documentosadjuntos();
                 $file = $f->getClientOriginalName();//archivo recibido
                 $filename = pathinfo($file, PATHINFO_FILENAME);//nombre archivo sin extension
                 $extension_adjunto = $f->getClientOriginalExtension();//extensión
                 $archivo_adjunto= $filename.'_'.time().'.'.$extension_adjunto;//
-                $f->storeAs('documentos_adjuntos/',$archivo,'public');//refiere carpeta publica es el nombre de disco
-                $obj->documento_adjunto = $archivo_adjunto;
+                $f->storeAs('documentos_adjuntos/',$archivo_adjunto,'public');//refiere carpeta publica es el nombre de disco
+                $obj_adjuntos->documento = $archivo_adjunto;
                 $obj_adjuntos->documentos_id=$ultimo_id;
                 $obj_adjuntos->documento=$archivo_adjunto;
                 $obj_adjuntos->extension=$extension_adjunto;
@@ -159,16 +159,18 @@ class DocumentosController extends Controller
         $doc=documentos::where('cvd','=',$codigo)->where('estado','=',1)->get();
         $id_doc=$doc->first();
 
-        $doc_adjuntos=documentosadjuntos::where('documentos_id','=',$id_doc->id)
-        ->select('documento')
-        ->get();
-        // dd($doc_adjuntos);
-
         if ($doc->count()>0){
             $msje='existe';
+            $doc_adjuntos=documentosadjuntos::where('documentos_id','=',$id_doc->id)
+            ->select('documento')
+            ->get();
         }else{
             $msje='noexiste';
+            $doc_adjuntos=['data'=>'No existend datos'];
         }
+        
+        // dd($doc_adjuntos);
+
         return view('plantillas.home_public',['mensaje'=>$msje,'doc'=>$doc,'doc_adjuntos'=>$doc_adjuntos]);
     }
 

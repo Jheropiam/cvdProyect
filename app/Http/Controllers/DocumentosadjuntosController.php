@@ -35,7 +35,7 @@ class DocumentosadjuntosController extends Controller
             $filename = pathinfo($file, PATHINFO_FILENAME);//nombre archivo sin extension
             $extension = request('documento')->getClientOriginalExtension();//extensión
             $archivo= $filename.'_'.time().'.'.$extension;//
-            request('documento')->storeAs('documentosadjuntos/',$archivo,'public');//refiere carpeta publica es el nombre de disco
+            request('documento')->storeAs('documentos_adjuntos/',$archivo,'public');//refiere carpeta publica es el nombre de disco
             $obj->documento = $archivo;
         }
         $obj->documentos_id=request('documento_id');

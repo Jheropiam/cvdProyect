@@ -20,8 +20,8 @@
                         <input id="documento" class="form-control" type="file" name="documento" id="documento" onchange="validar_doc('documento','mensajeError')" accept=".pdf" required>
                         <p id="mensajeError" style="color: red;"></p>
 
-                        <label for="">Seleccione Documento Adjunto.pdf(Max. 10MB)</label>
-                        <input id="documento_adjunto" class="form-control" type="file" name="documento_adjunto[]" onchange="validar_doc('documento_adjunto','mensajeError2')" id="documento_adjunto" accept=".pdf" multiple>
+                        <label for="">Seleccione Documento Adjunto.pdf(Max. 60MB)</label>
+                        <input id="documento_adjunto" class="form-control" type="file" name="documento_adjunto[]" onchange="validar_doc('documento_adjunto','mensajeError2')" accept=".pdf" multiple>
                         <p id="mensajeError2" style="color: red;"></p>
                         <input type="text" id="fecha" name="fecha" hidden>
                         <input type="hora" id="hora" name="hora" hidden>
@@ -64,7 +64,7 @@
             // Obtener el tamaño del archivo en bytes
             const tamañoArchivo = archivoInput.files[0].size;
             // Definir el tamaño máximo permitido (en este ejemplo, 5 MB)
-            const tamañoMaximo = 10 * 1024 * 1024; // 5 MB en bytes
+            const tamañoMaximo = 60 * 1024 * 1024; // 5 MB en bytes
 
             // Verificar si el archivo supera el tamaño máximo
             if (tamañoArchivo > tamañoMaximo) {
