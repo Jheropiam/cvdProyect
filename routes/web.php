@@ -42,7 +42,7 @@ Route::get('fill-data-pdf', [DocumentosController::class,'index']);
 //Documentos Adjuntos
 Route::get('/documentosadjuntos/create/{id}', [DocumentosadjuntosController::class,'create'])->middleware(['auth'])->name('documentosadjuntos.create');
 Route::post('/documentosadjuntos/store', [DocumentosadjuntosController::class,'store'])->middleware(['auth'])->name('documentosadjuntos.store');
-Route::get('/documentosadjuntos/destroy', [DocumentosadjuntosController::class,'destroy'])->middleware(['auth'])->name('documentosadjuntos.destroy');
+Route::get('/documentosadjuntos/destroy/{id}', [DocumentosadjuntosController::class,'destroy'])->middleware(['auth'])->name('documentosadjuntos.destroy');
 
 //Documentos
 Route::get('/documentos/create', [DocumentosController::class,'create'])->middleware(['auth'])->name('documentos.create');
