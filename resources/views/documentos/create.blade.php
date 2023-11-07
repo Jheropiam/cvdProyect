@@ -21,7 +21,7 @@
                         <p id="mensajeError" style="color: red;"></p>
 
                         <label for="">Seleccione Documento Adjunto.pdf(Max. 60MB)</label>
-                        <input id="documento_adjunto" class="form-control" type="file" name="documento_adjunto[]" onchange="validar_doc('documento_adjunto','mensajeError2')" accept=".pdf" multiple>
+                        <input id="documento_adjunto" class="form-control" type="file" name="documento_adjunto[]" onchange="validar_doc('documento_adjunto','mensajeError2')" accept=".pdf, .docx, .doc" multiple>
                         <p id="mensajeError2" style="color: red;"></p>
                         <input type="text" id="fecha" name="fecha" hidden>
                         <input type="hora" id="hora" name="hora" hidden>
