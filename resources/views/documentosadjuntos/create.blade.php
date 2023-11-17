@@ -16,7 +16,7 @@
                             <p style="color: red">(*)Obligatorio</p>
                             <label for="">Seleccione el documento (Max. 10MB-doc,docx,pdf)</label>
                         </div>
-                        <input class="form-control" type="file" name="documento" id="documento" onchange="validar_doc('documento','mensajeError')" accept=".pdf, .docx, .doc" required>
+                        <input class="form-control" type="file" name="documento" id="documento" onchange="validar_doc('documento','mensajeError')" accept=".pdf, .docx, .doc, .xlsx" required>
                         <p id="mensajeError" style="color: red;"></p>
                         <br>
                         <button type="submit" class="btn btn-primary"><i class="bx bx-send"></i>Enviar</button>
